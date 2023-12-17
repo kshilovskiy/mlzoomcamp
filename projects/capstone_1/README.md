@@ -17,7 +17,7 @@ The goal of this project is to help them create a model that can figure out a pe
    - Left eye
    - Right eye
 - **Hearing Ability:**
-   - Left ear[README.md](..%2F..%2F..%2F..%2F..%2FDownloads%2Fml-zoomcamp-2023-projects%2Fmidterm%2FREADME.md)
+   - Left ear
    - Right ear
 - **Blood Pressure:**
    - Systolic
@@ -52,7 +52,7 @@ Before you begin, ensure you have the following installed:
 
    ```shell
    git clone git@github.com:kshilovskiy/mlzoomcamp.git
-   cd ml_zoomcamp/projects/capstone_1
+   cd mlzoomcamp/projects/capstone_1
    ```
 
 2. Create a virtual environment with Pipenv:
@@ -92,7 +92,7 @@ Model and the vectorizer will be saved in the `model` folder.
 
 To run the Flask application, run the following command:
 ```shell
-python app.py
+python predict.py
 ```
 The server will be available at `http://localhost:8000/`.
 
