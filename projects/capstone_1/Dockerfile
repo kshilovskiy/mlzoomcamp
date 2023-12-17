@@ -1,0 +1,24 @@
+# First install the python 3.10, the slim version uses less space
+FROM python:3.11.2-slim
+
+# Install pipenv library in Docker
+RUN pip install pipenv
+
+# create a directory in Docker named app and we're using it as work directory
+WORKDIR /app
+
+# Copy the Pip files into our working derectory
+COPY ["Pipfile", "Pipfile.lock", "./"]
+
+# install the pipenv dependencies for the project and deploy them.
+RUN pipenv install --deploy --system
+
+# Copy any python files and the model we had to the working directory of Docker
+COPY "models/" "./models"
+COPY ["predict.py", "common.py", "./"]
+
+# We need to expose the 9696 port because we're not able to communicate with Docker outside it
+EXPOSE 8080
+
+# If we run the Docker image, we want our churn app to be running
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8080", "predict:app"]
