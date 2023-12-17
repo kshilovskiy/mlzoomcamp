@@ -7,7 +7,7 @@ The problem is taken from the kaggle competition [Binary Prediction of Smoker St
 The challenge states that a team of scientists is working on a machine learning project to predict whether someone smokes or not. 
 The goal of this project is to help them create a model that can figure out a person's smoking status using various health data.
 
-### Dataset Overview
+### Health Dataset Overview
 
 - **Age:** 5-year groups
 - **Height:** (in centimeters)
@@ -126,8 +126,6 @@ curl --location --request POST 'http://localhost:8000/predict' \
                "dental caries": 0.0}'
 ```
 
-
-
 ## Building and Running the Docker Image
 
 1. Build the Docker image from the project directory (where the Dockerfile is located):
@@ -142,7 +140,7 @@ curl --location --request POST 'http://localhost:8000/predict' \
    docker run -p 8080:8080 smoking-predictor
    ```
 
-   This command runs the container and maps port 8080 on your local machine to port 80 in the container. Adjust the ports as needed.
+   This command runs the container and maps port 8080 on your local machine to port 8080 in the container. Adjust the ports as needed.
 
 3. Your machine learning project should now be accessible at `http://localhost:8080` in your web browser.
 4. You can try the following request to test the prediction with curl:
@@ -193,5 +191,44 @@ eb local run --port 8080
 4. Deploy the project to AWS:
 ```shell
 eb create smoking-predictor-eb-env
+```
+
+## Serving Predictions
+The project is deployed to AWS Elastic Beanstalk and is available at http://konstantin-predictor-env.eba-32ypi5nq.eu-central-1.elasticbeanstalk.com/predict.
+
+Here is how you can try it oue with curl:
+```shell
+curl --location --request POST 'http://konstantin-predictor-env.eba-32ypi5nq.eu-central-1.elasticbeanstalk.com/predict' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+               "age": 40.0,
+               "height(cm)": 175.0,
+               "weight(kg)": 65.0,
+               "waist(cm)": 85.0,
+               "eyesight(left)": 1.5,
+               "eyesight(right)": 1.5,
+               "hearing(left)": 1.0,
+               "hearing(right)": 1.0,
+               "systolic": 116.0,
+               "relaxation": 74.0,
+               "fasting blood sugar": 92.0,
+               "Cholesterol": 179.0,
+               "triglyceride": 206.0,
+               "HDL": 41.0,
+               "LDL": 97.0,
+               "hemoglobin": 15.1,
+               "Urine protein": 1.0,
+               "serum creatinine": 1.1,
+               "AST": 23.0,
+               "ALT": 35.0,
+               "Gtp": 56.0,
+               "dental caries": 0.0}'
+```
+
+The response returns the probability of a person being a smoker:
+```json
+{
+    "prediction": "[0.8566376]"
+}
 ```
 
